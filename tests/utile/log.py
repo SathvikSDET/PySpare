@@ -1,19 +1,27 @@
 import logging
+import os
+from datetime import datetime
 
 class Log:
-    def __init__(self, log_file="app.log"):
-        # Create a logger
-        self.logger = logging.getLogger(__name__)
-        self.logger.setLevel(logging.DEBUG)  # Set log level to DEBUG (you can change it to INFO, WARNING, etc.)
+    def __init__(self, class_name):
+
+         # Generate a timestamp
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         
-        # Create a file handler to log messages to a file
+        # Create a dynamic log directory
+        log_dir = os.path.join(os.getcwd(),"PySpare", "logs")
+        os.makedirs(log_dir, exist_ok=True)
+        log_file = os.path.join(log_dir, f"{class_name}_{timestamp}.log")
+
+        self.logger = logging.getLogger(class_name)
+        self.logger.setLevel(logging.DEBUG)  
+      
         file_handler = logging.FileHandler(log_file)
         
-        # Create a formatter and set it for the handler
         formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
         file_handler.setFormatter(formatter)
         
-        # Add the file handler to the logger
+        
         self.logger.addHandler(file_handler)
 
     def log_message(self, level, message):
@@ -31,11 +39,12 @@ class Log:
         elif level == "critical":
             self.logger.critical(message)
         else:
-            self.logger.info(message)  # Default to info if the level is not recognized
+            self.logger.info(message)  
 
-# Example usage:
+
 if __name__ == "__main__":
-    log = Log("app.log")  # Create the Log object and specify log file name
+    log = Log(__name__) 
+     #
     log.log_message("info", "This is an info message")
     log.log_message("warning", "This is a warning message")
     log.log_message("error", "This is an error message")

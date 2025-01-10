@@ -10,6 +10,9 @@ class BasePom(ABC):
     
     def find_element(self ,webelment):
         return self.wait.until(EC.presence_of_element_located(webelment))
+    
+    def find_elements(self ,webelment):
+        return self.wait.until(EC.presence_of_all_elements_located(webelment))
 
 
     def load_config(self):

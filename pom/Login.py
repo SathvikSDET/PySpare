@@ -1,4 +1,4 @@
-from BasePom import BasePom
+from .BasePom import BasePom
 from selenium.webdriver.common.by import By
 import time
 
